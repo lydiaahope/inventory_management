@@ -1,4 +1,5 @@
 <!-- base file for all templates [parent template]-->
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,6 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link href="https://bootswatch.com/5/morph/bootstrap.min.css" rel="stylesheet"> <!--
 	CSS href from bootswatch.com -->
+	<link href="{% static 'css/style.css' %}" rel="stylesheet" />
 	<title></title>
 </head>
 <body>
@@ -13,6 +15,8 @@
 
 	{% block content %} <!-- creates content block called 'content' -->
 	{% endblock content %}
+
+	{% include 'inventory/footer.html' %}
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script> <!-- makes sure that certain things like menus work -->
 

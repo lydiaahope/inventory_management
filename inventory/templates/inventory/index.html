@@ -3,16 +3,76 @@
 
 {% block content %}
 
-<div>
-	<div class="row">
-		<div class="col-sm-11 col-md-6 mx-auto mt-5 px-3">
-			<h1 class="fw-light">Track and Manage Your Inventory</h1>
-			<p class="fw-light">Keep track of your inventory and recieve quantity alerts for low inventory.</p>	
-			<div>
-				<a href="{% url 'dashboard' %}" class="btn btn-primary">Get started now!</a>
+<div class="content-body">
+	<div class="about-us bg-light">
+		<h5>Who are we?</h5>
+		<p>We are TheBookStore.com a fun side project created by 5 amazing Computer Science students from Colorado Technical University.We have designed this website as a final project, it is setup so we can work as in a small agile development team.</p>
+		<p>The team consists of Carlton Wallen (Development), Josh Thorpe (Development), Lydia Snow (Product Owner/Scrum Master), Warren Scott(Development), and Brett Schoff(Development)</p>
+	</div>
+	<div class="search">
+		<form class="d-flex">
+			<input type="search" size="150" placeholder="Looking for a Book?" class="form-control me-sm-4" />
+			<button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search Books</button>
+		</form>
+	</div>
+	<div class="recommended-title">
+		<h4>Recommended Books</h4>
+	</div>
+	<div class="lower-half">
+		<div class="recommended-books">
+			<div class="card text-white bg-info" style="width: 18rem; height: 20rem">
+				<div class="card-body">
+					<h5 class="card-title">The Shadow of the Gods</h5>
+					<p class="card-text">Set in a brand-new, Norse-inspired world, and packed with myth, magic, and vengeance, The Shadow of the Gods begins an epic new fantasy saga from bestselling author John Gwynne.</p>
+				</div>
+				<div class="card-footer">
+					<button class="btn btn-primary">Add to Cart</button>
+				</div>
+			</div>
+			<div class="card text-white bg-info" style="width: 18rem; height: 20rem">
+				<div class="card-body">
+					<h5 class="card-title">From Blood and Ash</h5>
+					<p class="card-text">Captivating and action-packed, From Blood and Ash is a sexy, addictive, and unexpected fantasy perfect for fans of Sarah J. Maas and Laura Thalassa.</p>
+				</div>
+				<div class="card-footer">
+					<button class="btn btn-primary">Add to Cart</button>
+				</div>
+			</div>
+			<div class="card text-white bg-info" style="width: 18rem; height: 20rem">
+				<div class="card-body">
+					<h5 class="card-title">The Keeper of Stars</h5>
+					<p class="card-text">Who says you can not rewrite the stars? 1962 Twelve years removed from the summer when she first gave her heart away, Dr. Elizabeth (Ellie) Spencer, Professor of Astronomy at Indiana University, receives a mysterious package that has her asking that very question...</p>
+				</div>
+				<div class="card-footer">
+					<button class="btn btn-primary">Add to Cart</button>
+				</div>
+			</div>
+			<div class="card text-white bg-info" style="width: 18rem; height: 20rem">
+				<div class="card-body">
+					<h5 class="card-title">He Who Fights with Monsters</h5>
+					<p class="card-text">Jason wakes up in a mysterious world of magic and monsters.It is not easy making the career jump from office-supplies-store middle manager to heroic interdimensional adventurer.</p>
+				</div>
+				<div class="card-footer">
+					<button class="btn btn-primary">Add to Cart</button>
+				</div>
 			</div>
 		</div>
+		<div class="cart bg-light">
+			<table>
+				<thead>
+					<tr>
+						<th>Quick Cart</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Here is the book names!</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
+
 </div>
 
 {% endblock content %}

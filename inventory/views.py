@@ -39,7 +39,7 @@ class Dashboard(LoginRequiredMixin, View): #LoginRequiredMixin makes dashboard i
 class SignUpView(View):
 	def get(self, request):
 		form = UserRegisterForm()
-		return render(request, 'inventory/signup.html', {'form': form}) #returns empty form
+		return render(request, 'inventory/emp_signup.html', {'form': form}) #returns empty form
 
 	def post(self, request):
 		form = UserRegisterForm(request.POST) #gets submitted data
@@ -54,7 +54,7 @@ class SignUpView(View):
 			login(request, user)
 			return redirect('index')
 
-		return render(request, 'inventory/signup.html', {'form': form}) #if not valid this redirects to original page
+		return render(request, 'inventory/emp_signup.html', {'form': form}) #if not valid this redirects to original page
 
 class AddItem(LoginRequiredMixin, CreateView):
 	model = InventoryItem

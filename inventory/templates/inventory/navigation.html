@@ -19,9 +19,21 @@
 				</li>
 			</ul>
 			<ul class="navbar-nav">
+				{% if user.is_authenticated %}
+					<li class="nav-item"> <!-- creates list item -->
+						<a class="nav-link" href="{% url 'dashboard' %}">{{ user.username }}</a>
+					</li>
+					
+					<form action="{% url 'logout' %}" method="post">
+						{% csrf_token %}
+						<button class="btn btn-sm">Log Out</button>
+					</form>
+				{% else %}
+
 				<li class="nav-item">
-					<a class="nav-link me-2" href="{% url 'login' %}">Employee Log In</a>
+					<a class="nav-link me-2" href="{% url 'emp_login' %}">Employee Log In</a>
 				</li>
+				{% endif %}
 			</ul>
 		</div>
 	</div>

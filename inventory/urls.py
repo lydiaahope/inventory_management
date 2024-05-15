@@ -9,8 +9,8 @@ urlpatterns = [
     path('add-item/', AddItem.as_view(), name='add-item'),
     path('edit-item/<int:pk>', EditItem.as_view(), name='edit-item'), #<int:pk> lets it know we need an int as primarykey
     path('delete-item/<int:pk>', DeleteItem.as_view(), name='delete-item'),
-    path('signup/', SignUpView.as_view(), name='signup'),
-    path('login/', auth_views.LoginView.as_view(template_name='inventory/login.html'), name='login'),
+    path('emp_signup/', SignUpView.as_view(), name='emp_signup'),
+    path('emp_login/', auth_views.LoginView.as_view(template_name='inventory/emp_login.html'), name='emp_login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='inventory/logout.html'), name='logout')
 ]
 # path('') points rootpath to Index.as_view() and loads index page

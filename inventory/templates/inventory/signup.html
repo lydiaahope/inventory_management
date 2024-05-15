@@ -4,7 +4,7 @@
 {% block content %}
 	<div class="row">
 		<div class="col-11 col-md-6 mx-auto mt-5 mb-5">
-			<h1>Sign Up</h1>
+			<h1>Employee Sign Up</h1>
 			{% if form.errors %}
 				{% for field in form %}
 					{% for error in field.errors %}
@@ -27,7 +27,7 @@
 				<button class="btn btn-primary" type="submit">Sign Up</button>
 
 			<div class="pt-3">
-			<small class="text-muted">Already have an account? <a href="{% url 'login' %}" class="ml-2">Sign In</a></small> <!-- creates link to login page -->
+			<small class="text-muted">Already have an employee account? <a href="{% url 'login' %}" class="ml-2">Sign In</a></small> <!-- creates link to login page -->
 		</div>
 			</form>
 		</div> 

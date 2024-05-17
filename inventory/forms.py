@@ -16,4 +16,4 @@ class InventoryItemForm(forms.ModelForm):
 	author = forms.ModelChoiceField(queryset=Author.objects.all(), initial=0)
 	class Meta:
 		model = InventoryItem
-		fields = ['name', 'quantity', 'author']
+		fields = ['name', 'quantity', 'author', 'ISBN']

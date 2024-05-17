@@ -6,6 +6,7 @@ class InventoryItem(models.Model):
 	name = models.CharField(max_length=200)
 	quantity = models.IntegerField()
 	author = models.ForeignKey('Author', on_delete=models.SET_NULL, blank=True, null=True)
+	ISBN = models.CharField(max_length=200, default='Enter ISBN here')
 	date_created = models.DateTimeField(auto_now_add=True)
 	user = models.ForeignKey(User, on_delete=models.CASCADE) #if user deleted, all their invtoryitems are deleted
 

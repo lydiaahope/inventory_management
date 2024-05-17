@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, View, CreateView, UpdateView, DeleteView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import UserRegisterForm, InventoryItemForm
-from .models import InventoryItem, Author
+from .forms import UserRegisterForm, InventoryItemForm, OrderForm
+from .models import InventoryItem, Author, Order
 from inventory_management.settings import LOW_QUANTITY
 from django.contrib import messages
 
@@ -82,3 +82,28 @@ class DeleteItem(LoginRequiredMixin, DeleteView):
 	template_name = 'inventory/delete_item.html'
 	success_url = reverse_lazy('dashboard')
 	context_object_name = 'item'
+
+class OrderList(LoginRequiredMixin, View):
+	def get(self, request):
+		orders = Order.objects.all()
+		return render(request, 'inventory/order_list.html', {'orders': orders})
+
+class CreateOrder(LoginRequiredMixin, View):
+	def get(self, request):
+		form = OrderForm()
+		return render(request, 'inventory/create_order.html', {'form': form})
+
+	def post(self, request):
+		form = OrderForm(request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect('order_list')
+		return render(request, 'inventory/create_order.html', {'form': form})
+
+def update_item_quantity(request, item_id, new_quantity):
+	item = get_object_or_404(InventoryItem, id = item_id)
+	item.quantity = new_quantity
+	item.reordered = False # Reset the flag
+	item.save()
+	return redirected('dashboard')
+

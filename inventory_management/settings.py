@@ -132,3 +132,13 @@ LOGIN_URL = 'emp_login'
 LOGOUT_REDIRECT_URL = '/emp_login'
 
 LOW_QUANTITY = 1
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+
+CELERY_BEAT_SCHEDULE = {
+    'check-inventory-every-2-minutes': {
+        'task': 'inventory.tasks.check_inventory_task',
+        'schedule': 120.0, # 2 minutes
+    },
+}

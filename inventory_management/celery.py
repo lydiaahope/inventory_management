@@ -7,8 +7,10 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'inventory_management.settings')
 
 app = Celery('inventory_management')
 
-# Using a string here means the worker will not have to
-# pickle the object when using Windows.
+# Using a string here means the worker doesn't have to serialize
+# the configuration object to child processes.
+# - namespace='CELERY' means all celery-related configuration keys
+#   should have a `CELERY_` prefix.
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
 # Load task modules from all registered Django app configs.

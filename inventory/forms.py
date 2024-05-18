@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Author, InventoryItem
+from .models import Author, InventoryItem, Order
 
 class UserRegisterForm(UserCreationForm):
 	email = forms.EmailField()
@@ -17,3 +17,9 @@ class InventoryItemForm(forms.ModelForm):
 	class Meta:
 		model = InventoryItem
 		fields = ['name', 'quantity', 'author', 'ISBN']
+
+class OrderForm(forms.ModelForm):
+	class Meta:
+		model = Order
+		fields = ['item', 'quantity', 'manufacturer']
+

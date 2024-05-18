@@ -1,27 +1,35 @@
 {% extends 'inventory/base.html' %}
 
 {% block content %}
-	{% if messages %}
-		<div class="row mt-3">
-			{% for message in messages %}
-				{% if message.tags == 'error' %} <!-- if it has error will display danger message -->
-					<div class="col-md-10 col-12 mx-auto alert alert-danger">
-						{{ message }}
-					</div>
-				{% else %}
-					<div class="col-md-10 col-12 mx-auto alert alert-success">
-						{{ message }}
-				{% endif %}
-			{% endfor %}
-		</div>
-	{% endif %}
-	<div class="row">
-		<div class="col-md-10 col-12 mx-auto mt-5">
-			<div class="d-flex justify-content-end">
-				<a href="{% url 'add-item' %}" class="btn btn-primary">+</a>
-			</div>
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-8">
+            <h2>Inventory Dashboard</h2>
+        </div>
+        <div class="col-md-4 d-flex justify-content-end align-items-center">
+            <a href="{% url 'add-item' %}" class="btn btn-primary">+</a>
+        </div>
+    </div>
 
-			<table class="table table-hover table-striped">
+    {% if messages %}
+    <div class="row mt-3">
+        <div class="col-md-12">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+	<div class="row">
+		<div class="col-12 mt-5">
+			<!--<div class="d-flex justify-content-end">
+				<a href="{% url 'add-item' %}" class="btn btn-primary">+</a>
+			</div>-->
+
+			<table class="table table-hover table-striped w-100">
 				<thead>
 					<tr>
 						<th scope="col">ID</th>
@@ -41,8 +49,8 @@
 						<td>-</td>
 						<td>-</td>
 						<td>-</td>
-						<td></td>
-						<td></td>
+						<td><a href="#" class="btn btn-sm btn-primary">Edit</a></td>
+						<td><a href="#" class="btn btn-sm btn-primary">Delete</a></td>
 					</tr>
 					{% endif %}
 
@@ -53,12 +61,18 @@
 						<td>{{ item.quantity }}</td>
 						<td>{{ item.author.name }}</td>
 						<td>{{ item.ISBN }}</td>
-						<td><a href="{% url 'edit-item' item.id %}" class="btn btn-sm">Edit</a></td>
-						<td><a href="{% url 'delete-item' item.id %}" class="btn btn-sm">Delete</a></td>
+						<td><a href="{% url 'edit-item' item.id %}" class="btn btn-sm btn-outline-secondary">Edit</a></td>
+						<td><a href="{% url 'delete-item' item.id %}" class="btn btn-sm btn-outline-danger">Delete</a></td>
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
+
+			<div>
+				Check orders? <a href=" {%url 'order_list' %}">Click here</a>
+			</div>
 		</div>
 	</div>
+</div>
+
 {% endblock content %}

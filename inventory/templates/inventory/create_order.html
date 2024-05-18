@@ -1,23 +1,25 @@
 {% extends 'inventory/base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-    <a href="{% url 'order_list' %}" class="btn btn-primary my-3 mx-4">Go Back</a>
+<div class="container mt-3 overflow-auto" style="max-height: 80vh; padding-bottom: 2rem;">
+    <a href="{% url 'order_list' %}" class="btn btn-outline-primary my-3 mx-4">Go Back</a>
 
     <div class="row">
         <div class="col-11 col-md-6 mx-auto mt-5">
             <h2>Create Order</h2>
         
-            <form method="post">
+            <form method="POST">
                 {% csrf_token %}
-                {{ form.as_p }}
+                {{ form|crispy }}
             
-            <div class="mt-3">
-                <button type="submit">Create Order</button>
-            </div>
+                <div class="mt-3">
+                    <button class="btn btn-primary">Create Order</button>
+                </div>
             </form>
         </div>
     </div>
-
+</div>
 
 {% endblock %}
 

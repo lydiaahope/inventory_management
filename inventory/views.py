@@ -3,8 +3,8 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, View, CreateView, UpdateView, DeleteView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import UserRegisterForm, InventoryItemForm, OrderForm
-from .models import InventoryItem, Author, Order
+from .forms import UserRegisterForm, InventoryItemForm, OrderForm, SaleForm, SaleItemForm
+from .models import InventoryItem, Author, Order, Sale, SaleItem 
 from inventory_management.settings import LOW_QUANTITY
 from django.contrib import messages
 
@@ -106,4 +106,32 @@ def update_item_quantity(request, item_id, new_quantity):
 	item.reordered = False # Reset the flag
 	item.save()
 	return redirected('dashboard')
+
+class SaleCreateView(LoginRequiredMixin, CreateView):
+	model = Sale 
+	form_class = SaleForm 
+	template_name = 'inventory/sale_form.html'
+	success_url = reverse_lazy('dashboard')
+
+	def form_valid(self, form):
+		form.instance.user = self.request.user
+		response = super().form_valid(form)
+		#redirect to the sale item creation page
+		return redirect('sale_item_add', sale_id=self.object.id)
+
+	
+class SaleItemCreateView(LoginRequiredMixin, CreateView):
+	model = SaleItem 
+	form_class = SaleItemForm
+	template_name = 'inventory/sale_item_form.html'
+	success_url = reverse_lazy('dashboard')
+
+	def form_valid(self, form):
+		form.instance.sale_id = self.kwargs['sale_id']
+		return super().form_valid(form)
+
+
+
+
+
 

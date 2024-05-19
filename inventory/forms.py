@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Author, InventoryItem, Order
+from .models import Author, InventoryItem, Order, Sale, SaleItem
 
 class UserRegisterForm(UserCreationForm):
 	email = forms.EmailField()
@@ -23,3 +23,12 @@ class OrderForm(forms.ModelForm):
 		model = Order
 		fields = ['item', 'quantity', 'manufacturer']
 
+class SaleForm(forms.ModelForm):
+	class Meta:
+		model = Sale
+		fields = ['user', 'customer_name', 'total_amount']
+
+class SaleItemForm(forms.ModelForm):
+	class Meta:
+		model = SaleItem
+		fields = ['item', 'quantity', 'price']

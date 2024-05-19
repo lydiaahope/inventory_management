@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import Index, SignUpView, Dashboard, AddItem, EditItem, DeleteItem, OrderList, CreateOrder
+from .views import Index, SignUpView, Dashboard, AddItem, EditItem, DeleteItem, OrderList, CreateOrder, SaleCreateView, SaleItemCreateView
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -13,6 +13,8 @@ urlpatterns = [
     path('orders/create/', CreateOrder.as_view(), name = 'create_order'),
     path('emp_signup/', SignUpView.as_view(), name='emp_signup'),
     path('emp_login/', auth_views.LoginView.as_view(template_name='inventory/emp_login.html'), name='emp_login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='inventory/logout.html'), name='logout')
+    path('logout/', auth_views.LogoutView.as_view(template_name='inventory/logout.html'), name='logout'),
+    path('sale/add/', SaleCreateView.as_view(), name = 'sale_add'),
+    path('sale/<int:sale_id>/add-item/', SaleItemCreateView.as_view(), name = 'sale_item_add')
 ]
 # path('') points rootpath to Index.as_view() and loads index page

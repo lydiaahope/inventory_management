@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from .views import Index, SignUpView, Dashboard, AddItem, EditItem, DeleteItem, OrderList, CreateOrder
 from django.contrib.auth import views as auth_views
+from . import views
 
 urlpatterns = [
     path('', Index.as_view(), name = 'index'),
@@ -13,6 +14,8 @@ urlpatterns = [
     path('orders/create/', CreateOrder.as_view(), name = 'create_order'),
     path('emp_signup/', SignUpView.as_view(), name='emp_signup'),
     path('emp_login/', auth_views.LoginView.as_view(template_name='inventory/emp_login.html'), name='emp_login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='inventory/logout.html'), name='logout')
+    path('logout/', auth_views.LogoutView.as_view(template_name='inventory/logout.html'), name='logout'),
+    path('books', views.bookList, name='book_list'),
+    path('books/<str:isbn>', views.book_detail, name='book_detail')
 ]
 # path('') points rootpath to Index.as_view() and loads index page

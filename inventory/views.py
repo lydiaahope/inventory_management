@@ -107,3 +107,10 @@ def update_item_quantity(request, item_id, new_quantity):
 	item.save()
 	return redirected('dashboard')
 
+def bookList(request):
+	book = InventoryItem.objects.all()
+	return render(request, 'inventory/book_list.html', {'book': book})
+
+def book_detail(request, isbn):
+	book = InventoryItem.objects.get(ISBN=isbn)
+	return render(request, 'inventory/book_detail.html', {'book': book})

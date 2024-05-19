@@ -11,12 +11,6 @@ a {
     color: #00B7FF;
 }
 
-.header{
-    display: flex;
-    flex-direction:row;
-    justify-content:space-between;
-    align-items:center;
-}
 .title{
     margin-left: 5px;
 }
@@ -27,8 +21,7 @@ a {
     flex-direction: row-reverse;
 }
 .nav-bar {
-    margin-top: 5px;
-    width: 95%;
+    width: 100vw;
 }
 .menu-button{
     height:35px;
@@ -122,4 +115,37 @@ a {
 .content-height{
     height: 87vh;
     width: 99%;
+}
+.list-body{
+    height: 87vh;
+    width: 98vw;
+}
+.detail-body{
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.detail-content{
+    width: 80vw;
+    height: 80vh;
+    border-radius: 20px;
+    padding: 50px;
+}
+.detail_div{
+    background-color: white;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+.font-size-h5{
+    font-size: 1.5rem;
+}
+.font-color-black{
+    color: black;
+}
+.label-margin-right{
+    margin-right: 40px;
+}
+.font-size-h6{
+    font-size: 1.25rem;
 }

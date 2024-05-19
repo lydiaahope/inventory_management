@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("inventory_management/", include("django.contrib.auth.urls")),
+    path('user_login/', TemplateView.as_view(template_name='login_page/index.html'), name='user_login'),
     path('', include('inventory.urls')) # when at rootpath include inventory.urls
 ]

@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Our Bookstore</title>
+    <link rel="stylesheet" href="{% static 'login_page/styles.css' %}">
+</head>
+<body>
+    <div class="welcome-message">
+        <h1>Welcome to Our Bookstore!</h1>
+        <p>Your one-stop shop for all your reading needs!</p>
+    </div>
+    <div class="container">
+        <img src="images/bookstore.jpg" alt="Bookstore" class="bookstore-image">
+    </div>
+        
+        <div class="login-container">
+            <div class="login">
+                <h2>SIGN IN</h2>
+                <form>
+                    <input type="email" placeholder="Email" required>
+                    <input type="password" placeholder="Password" required>
+                    <label>
+                        <input type="checkbox"> Keep me signed in.
+                    </label>
+                    <button type="submit">SIGN IN</button>
+                    <a href="#">Forgot password?</a>
+                </form>
+            </div>
+            
+            <div class="signup">
+                <h2>DON'T HAVE AN ACCOUNT?</h2>
+                <button onclick="location.href='#'">CREATE AN ACCOUNT</button>
+            </div>
+        </div>
+        <div>
+                <a class="nav-link" href="{% url 'index' %}">Go back</a>
+            </div>
+    </div>
+
+    <script src="{% static 'login_page/app.js' %}"></script>
+</body>
+</html>
+

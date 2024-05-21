@@ -1,0 +1,33 @@
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+
+<div class="content-height">
+    <div class="row">
+        <div class="col-11 col-md-6 mx-auto mt-5">
+            <h2>Reporting Dashboard</h2>
+
+            <h3>Sales Report</h3>
+            <p>Total Sales: {{ total_sales }}</p>
+            <p>Total Revenue: {{ total_revenue }}</p>
+
+            <h3>Inventory Report</h3>
+            <p>Total Items: {{ total_items }}</p>
+            <p>Low Inventory Items:</p>
+            <ul>
+                {% for item in low_inventory_items %}
+                    <li>{{ item.name }}: {{ item.quantity }}</li>
+                {% endfor %}
+            </ul>
+
+<!-- Add other report sections as needed -->
+
+        <h3>Export Options</h3>
+            <a href="{% url 'export_sales' %}" class="btn btn-primary">Export Sales Data</a>
+            <a href="{% url 'export_inventory' %}" class="btn btn-primary">Export Inventory Data</a>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,12 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, View, CreateView, UpdateView, DeleteView
+from django.views.generic import TemplateView, View, CreateView, UpdateView, DeleteView, ListView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import UserRegisterForm, InventoryItemForm, OrderForm, SaleForm, SaleItemForm
 from .models import InventoryItem, Author, Order, Sale, SaleItem 
 from inventory_management.settings import LOW_QUANTITY
 from django.contrib import messages
+from django.http import HttpResponse
+from django.db import models
 
 #basic homepage with text
 class Index(TemplateView):
@@ -131,6 +133,68 @@ class SaleItemCreateView(LoginRequiredMixin, CreateView):
 		return super().form_valid(form)
 
 
+class SaleListView(LoginRequiredMixin, ListView):
+    model = Sale
+    template_name = 'inventory/sale_list.html'
+    context_object_name = 'sales'
+
+class SaleDetailView(LoginRequiredMixin, ListView):
+    model = SaleItem
+    template_name = 'inventory/sale_detail.html'
+    context_object_name = 'sale_items'
+
+    def get_queryset(self):
+        return SaleItem.objects.filter(sale_id=self.kwargs['pk'])
+
+class ReportView(LoginRequiredMixin, ListView):
+    model = Sale
+    template_name = 'inventory/report.html'
+    context_object_name = 'sales'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Sales data
+        total_sales = Sale.objects.count()
+        total_revenue = Sale.objects.aggregate(models.Sum('total_amount'))['total_amount__sum']
+        context['total_sales'] = total_sales
+        context['total_revenue'] = total_revenue
+        
+        # Inventory data
+        total_items = InventoryItem.objects.count()
+        low_inventory_items = InventoryItem.objects.filter(quantity__lte=5)  # Adjust threshold as needed
+        context['total_items'] = total_items
+        context['low_inventory_items'] = low_inventory_items
+
+        # Add other necessary context data for reporting
+        return context
+
+def export_sales(request):
+	# Create the HttpResponse object with the appropriate CSV header.
+	response = HttpResponse(context_type = 'text/csv')
+	response['Content-Disposition'] = 'attachment; filename="sales.csv"'
+
+	writer = csv.writer(response)
+	writer.writerow(['Customer Name', 'Total Amount', 'Date'])
+
+	sales = Sale.objects.all().values_list('customer_name', 'total_amount', 'date')
+	for sale in sales:
+		writer.writerow(sale)
+
+	return response
+
+def export_inventory(request): #exports inventory data
+	response = HttpResponse(content_type='text/csv')
+	response['Content-Disposition'] = 'attachment; filename="inventory.csv"'
+
+	writer = csv.writer(response)
+	writer.writerow(['Item Name', 'Quantity'])
+
+	items = InventoryItem.objects.all().values_list('name', 'quantity')
+	for item in items:
+		writer.writerow(item)
+
+	return response
 
 
 

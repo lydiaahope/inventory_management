@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from .views import Index, SignUpView, Dashboard, AddItem, EditItem, DeleteItem, OrderList, CreateOrder, SaleCreateView, SaleItemCreateView
+from .views import Index, SignUpView, Dashboard, AddItem, EditItem, DeleteItem, OrderList, CreateOrder, SaleCreateView, SaleItemCreateView, SaleListView, SaleDetailView, ReportView, export_sales, export_inventory
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
@@ -15,6 +15,11 @@ urlpatterns = [
     path('emp_login/', auth_views.LoginView.as_view(template_name='inventory/emp_login.html'), name='emp_login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='inventory/logout.html'), name='logout'),
     path('sale/add/', SaleCreateView.as_view(), name = 'sale_add'),
-    path('sale/<int:sale_id>/add-item/', SaleItemCreateView.as_view(), name = 'sale_item_add')
+    path('sale/<int:sale_id>/add-item/', SaleItemCreateView.as_view(), name = 'sale_item_add'),
+    path('sales/', SaleListView.as_view(), name = 'sale_list'),
+    path('sales/<int:pk>/', SaleDetailView.as_view(), name = 'sale_detail'),
+    path('reports/', ReportView.as_view(), name = 'report'),
+    path('export_sales/', export_sales, name = 'export_sales'),
+    path('export_inventory/', export_inventory, name = 'export_inventory')
 ]
 # path('') points rootpath to Index.as_view() and loads index page

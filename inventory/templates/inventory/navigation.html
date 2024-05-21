@@ -24,8 +24,15 @@
 			<ul class="navbar-nav">
 				{% if user.is_authenticated %}
 					<li class="nav-item"> <!-- creates list item -->
+						<a class="nav-link" href="{% url 'dashboard' %}">Inventory</a>
+
+						<a class="nav-link" href="{% url 'sale_list' %}">Sales</a>
+    
+    					<a class="nav-link" href="{% url 'report' %}">Reports</a>
+
 						<a class="nav-link" href="{% url 'dashboard' %}">{{ user.username }}</a>
 					</li>
+
 					
 					<form action="{% url 'logout' %}" method="post">
 						{% csrf_token %}

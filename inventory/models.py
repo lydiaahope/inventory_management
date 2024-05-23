@@ -1,16 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinLengthValidator
 
 
 class InventoryItem(models.Model):
 	name = models.CharField(max_length=200)
 	quantity = models.IntegerField()
 	author = models.ForeignKey('Author', on_delete=models.SET_NULL, blank=True, null=True)
-	ISBN = models.CharField(max_length=200, default='')
+	ISBN = models.CharField(max_length=13, unique=True, validators=[MinLengthValidator(13)])
 	date_created = models.DateTimeField(auto_now_add=True)
 	user = models.ForeignKey(User, on_delete=models.CASCADE) #if user deleted, all their invtoryitems are deleted
 	threshold = models.IntegerField(default=1)
 	reordered = models.BooleanField(default=False)
+
 
 	def __str__(self):
 		return self.name
@@ -40,7 +42,7 @@ class Sale(models.Model):
 	date = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
-		return f"Sale by {self.user.username} to {self.customer_name} on {self.date.strftime('%Y-%m-%d')}"
+		 return f"{self.customer_name} - {self.total_amount} - {self.date}"
 
 class SaleItem(models.Model):
 	sale = models.ForeignKey(Sale, on_delete=models.CASCADE, related_name='items')
@@ -51,5 +53,11 @@ class SaleItem(models.Model):
 	def __str__(self):
 		return f"{self.quantity} of {self.item.name} at {self.price}"
 
+class Cart(models.Model):
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
 
+class CartItem(models.Model):
+	cart = models.ForeignKey(Cart, related_name='items', on_delete=models.CASCADE)
+	inventory_item = models.ForeignKey(InventoryItem, on_delete=models.CASCADE) #mention of inventory_item, this can be changed to fit user side inventory
+	quantity = models.PositiveIntegerField(default=1)
 

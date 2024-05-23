@@ -3,12 +3,13 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, View, CreateView, UpdateView, DeleteView, ListView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import UserRegisterForm, InventoryItemForm, OrderForm, SaleForm, SaleItemForm
-from .models import InventoryItem, Author, Order, Sale, SaleItem 
+from .forms import UserRegisterForm, InventoryItemForm, OrderForm, SaleForm, SaleItemForm, CartItemForm
+from .models import InventoryItem, Author, Order, Sale, SaleItem, Cart, CartItem  
 from inventory_management.settings import LOW_QUANTITY
 from django.contrib import messages
 from django.http import HttpResponse
 from django.db import models
+import csv
 
 #basic homepage with text
 class Index(TemplateView):
@@ -109,6 +110,10 @@ def update_item_quantity(request, item_id, new_quantity):
 	item.save()
 	return redirected('dashboard')
 
+def bookList(request):
+	book = InventoryItem.objects.all()
+	return render(request, 'inventory/book_list.html', {'book': book})
+
 class SaleCreateView(LoginRequiredMixin, CreateView):
 	model = Sale 
 	form_class = SaleForm 
@@ -171,7 +176,7 @@ class ReportView(LoginRequiredMixin, ListView):
 
 def export_sales(request):
 	# Create the HttpResponse object with the appropriate CSV header.
-	response = HttpResponse(context_type = 'text/csv')
+	response = HttpResponse(content_type = 'text/csv')
 	response['Content-Disposition'] = 'attachment; filename="sales.csv"'
 
 	writer = csv.writer(response)
@@ -197,5 +202,26 @@ def export_inventory(request): #exports inventory data
 	return response
 
 
+class CartView(View):
+	def get(self, request):
+		cart, created = Cart.objects.get_or_create(user=request.user)
+		cart_items = CartItem.objects.filter(cart=cart)
+		return render(request, 'inventory/cart.html', {'cart_items' : cart_items})
+
+class AddToCartView(CreateView):
+	model = CartItem
+	form_class = CartItemForm
+	template_name = 'inventory/add_to_cart.html'
+	success_url = reverse_lazy('cart')
+
+	def form_valid(self, form):
+		cart, created = Cart.objects.get_or_create(user=self.request.user)
+		return super().form_valid(form)
+
+class CartItemDeleteView(View):
+	def get(self, request, pk):
+		cart_item = CartItem.objects.get(pk=pk)
+		cart_item.delete()
+		return redirect('cart')
 
 

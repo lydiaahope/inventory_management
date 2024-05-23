@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Author, InventoryItem, Order, Sale, SaleItem
+from .models import Author, InventoryItem, Order
+from .models import Author, InventoryItem, Order, Sale, SaleItem, CartItem
 
 class UserRegisterForm(UserCreationForm):
 	email = forms.EmailField()
@@ -17,6 +19,15 @@ class InventoryItemForm(forms.ModelForm):
 	class Meta:
 		model = InventoryItem
 		fields = ['name', 'quantity', 'author', 'ISBN']
+		widgets = {
+			'ISBN': forms.TextInput(attrs={'maxlength': 13, 'minlength': 13}),
+		}
+		error_messages = {
+			'ISBN': {
+				'unique': "An item with this ISBN already exists.",
+				'min_length': "The ISBN must be exactly 13 characters long.",
+			},
+		}
 
 class OrderForm(forms.ModelForm):
 	class Meta:
@@ -32,3 +43,9 @@ class SaleItemForm(forms.ModelForm):
 	class Meta:
 		model = SaleItem
 		fields = ['item', 'quantity', 'price']
+
+class CartItemForm(forms.ModelForm):
+	class Meta:
+		model = CartItem
+		fields = ['inventory_item', 'quantity'] #inventory_item can be changed
+

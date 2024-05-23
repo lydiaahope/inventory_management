@@ -1,0 +1,30 @@
+{% extends 'inventory/base.html' %}
+{% block content %}
+<div class="container">
+    <h2 class="my-4">Your Cart</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.inventory_item.name }}</td> <!-- inventory_item listed, can be changed as needed -->
+                <td>{{ item.quantity }}</td>
+                <td>
+                    <a href="{% url 'cart_item_delete' item.id %}" class="btn btn-danger btn-sm">Remove</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">Your cart is empty.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'inventory/base.html' %}
+{% block content %}
+<div class="container">
+    <h2 class="my-4">Remove Item from Cart</h2>
+    <p>Are you sure you want to remove {{ object.inventory_item.name }} from your cart?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, remove</button>
+        <a href="{% url 'cart' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
+
+<!-- THIS PAGE WILL WORK ONCE THERE ARE ITEMS AVAILABLE ON THE USER SIDE TO ADD TO CART -->

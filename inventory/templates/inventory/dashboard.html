@@ -37,6 +37,7 @@
 						<th scope="col">Qty</th>
 						<th scope="col">Author</th>
 						<th scope="col">ISBN</th>
+						<th scope="col">Description</th>
 						<th scope="col"></th>
 						<th scope="col"></th>
 					</tr>
@@ -45,6 +46,7 @@
 					{% if item|length == 0 %} <!-- shows empty table if no values -->
 					<tr>
 						<th scope="row">-</th>
+						<td>-</td>
 						<td>-</td>
 						<td>-</td>
 						<td>-</td>
@@ -61,6 +63,7 @@
 						<td>{{ item.quantity }}</td>
 						<td>{{ item.author.name }}</td>
 						<td>{{ item.ISBN }}</td>
+						<td>{{ item.description }}</td>
 						<td><a href="{% url 'edit-item' item.id %}" class="btn btn-sm btn-outline-secondary">Edit</a></td>
 						<td><a href="{% url 'delete-item' item.id %}" class="btn btn-sm btn-outline-danger">Delete</a></td>
 					</tr>

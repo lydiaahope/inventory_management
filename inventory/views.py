@@ -116,7 +116,6 @@ def bookList(request):
 
 def book_detail(request, isbn):
 	book = InventoryItem.objects.get(ISBN=isbn)
-<<<<<<< HEAD
 	return render(request, 'inventory/book_detail.html', {'book': book})
 
 class SaleCreateView(LoginRequiredMixin, CreateView):
@@ -230,6 +229,3 @@ class CartItemDeleteView(View):
 		return redirect('cart')
 
 
-=======
-	return render(request, 'inventory/book_detail.html', {'book': book})
->>>>>>> main

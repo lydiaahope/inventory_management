@@ -1,0 +1,31 @@
+{% extends 'inventory/base.html' %}
+
+{% block content %}
+<div class="content-height">
+    <div class="row">
+        <div class="col-11 col-md-6 mx-auto mt-5">
+        <h2>Sales</h2>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>Total Amount</th>
+                        <th>Date</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sale in sales %}
+                    <tr>
+                        <td>{{ sale.customer_name }}</td>
+                        <td>{{ sale.total_amount }}</td>
+                        <td>{{ sale.date }}</td>
+                        <td><a href="{% url 'sale_detail' sale.id %}" class="btn btn-info btn-sm">View Items</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

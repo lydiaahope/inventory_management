@@ -1,6 +1,7 @@
 {% extends 'inventory/base.html' %}
 
 {% block content %}
+
 <div class="container">
     <div class="row mt-3">
         <div class="col-8">
@@ -73,6 +74,8 @@
 
 			<div>
 				Check orders? <a href=" {%url 'order_list' %}">Click here</a>
+			
+					Create new order? <a href=" {%url 'sale_add' %}">Click here</a>
 			</div>
 		</div>
 	</div>

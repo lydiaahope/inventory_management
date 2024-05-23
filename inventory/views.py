@@ -114,6 +114,10 @@ def bookList(request):
 	book = InventoryItem.objects.all()
 	return render(request, 'inventory/book_list.html', {'book': book})
 
+def book_detail(request, isbn):
+	book = InventoryItem.objects.get(ISBN=isbn)
+	return render(request, 'inventory/book_detail.html', {'book': book})
+
 class SaleCreateView(LoginRequiredMixin, CreateView):
 	model = Sale 
 	form_class = SaleForm 

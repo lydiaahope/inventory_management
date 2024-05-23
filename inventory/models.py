@@ -12,6 +12,7 @@ class InventoryItem(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE) #if user deleted, all their invtoryitems are deleted
 	threshold = models.IntegerField(default=1)
 	reordered = models.BooleanField(default=False)
+	description = models.TextField(blank=True, null=True)
 
 
 	def __str__(self):

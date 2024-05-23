@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from .views import Index, SignUpView, Dashboard, AddItem, EditItem, DeleteItem, OrderList, CreateOrder, SaleCreateView, SaleItemCreateView, SaleListView, SaleDetailView, ReportView, export_sales, export_inventory, CartView, AddToCartView, CartItemDeleteView
 from django.contrib.auth import views as auth_views
+from . import views
 
 
 urlpatterns = [

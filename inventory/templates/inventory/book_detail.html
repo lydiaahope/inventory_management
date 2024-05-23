@@ -1,0 +1,34 @@
+{% extends 'inventory/base.html' %}
+
+{% block content%}
+
+<div class="detail-body">
+    <div class="detail-content bg-light" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div class="detail_div" style="width: fit-content; padding: 10px 50px 10px 10px;">
+            <label for="bookname" class="font-size-h5 font-color-black label-margin-right">Book Title: </label>
+            <span name="bookname">
+                {{book.name}}
+            </span>
+        </div>
+        <div class="detail_div" style="width: fit-content; padding: 10px 50px 10px 10px;">
+            <label for="bookauthor" class="font-size-h5 font-color-black label-margin-right">By:</label>
+            <span name="bookauthro">
+                {{book.author}}
+            </span>
+        </div>
+        <div class="detail_div" style="width: fit-content; padding: 10px 50px 10px 10px;">
+            <label for="bookisbn" class="font-size-h6 font-color-black label-margin-right">ISBN:</label>
+            <span name="bookisbn">
+                {{book.ISBN}}
+            </span>
+        </div>
+        <div class="detail_div" style="width: fit-content; padding: 10px 50px 10px 10px;">
+            <label for="bookcreated" class="font-size-h6 font-color-black label-margin-right">Written On:</label>
+            <span name="bookcreated">
+                {{book.date_created}}
+            </span>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

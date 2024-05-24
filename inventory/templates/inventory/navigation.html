@@ -25,8 +25,9 @@
 				{% if user.is_authenticated %}
 					<li class="nav-item"> <!-- creates list item -->
 						<a class="nav-link" href="{% url 'dashboard' %}">Inventory</a>
+						<a class="nav-link" href="{% url 'sale_add' %}">New Sale</a>
 
-						<a class="nav-link" href="{% url 'sale_list' %}">Sales</a>
+						<a class="nav-link" href="{% url 'sale_list' %}">Sale List</a>
     
     					<a class="nav-link" href="{% url 'report' %}">Reports</a>
 

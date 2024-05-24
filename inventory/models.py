@@ -28,13 +28,21 @@ class Author(models.Model):
 		return self.name
 		
 class Order(models.Model):
-    item = models.ForeignKey(InventoryItem, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-    order_date = models.DateTimeField(auto_now_add=True)
-    manufacturer = models.CharField(max_length=100)
+	STATUS_CHOICES = [
+		('Pending', 'Pending'),
+		('Shipped', 'Shipped'),
+		('Delivered', 'Delivered'),
+		('Canceled', 'Canceled')
+	]
 
-    def __str__(self):
-        return f"Order for {self.item.name} on {self.order_date}"
+	item = models.ForeignKey(InventoryItem, on_delete=models.CASCADE)
+	quantity = models.IntegerField()
+	order_date = models.DateTimeField(auto_now_add=True)
+	manufacturer = models.CharField(max_length=100)
+	status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+
+	def __str__(self):
+		return f"Order for {self.item.name} on {self.order_date}"
 
 class Sale(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)

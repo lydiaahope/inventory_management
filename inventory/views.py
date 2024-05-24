@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, View, CreateView, UpdateView, DeleteView, ListView
+from django.views.generic import TemplateView, View, CreateView, UpdateView, DeleteView, ListView, DeleteView, DetailView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import UserRegisterForm, InventoryItemForm, OrderForm, SaleForm, SaleItemForm, CartItemForm
+from .forms import UserRegisterForm, InventoryItemForm, OrderForm, SaleForm, SaleItemForm, CartItemForm, OrderStatusForm
 from .models import InventoryItem, Author, Order, Sale, SaleItem, Cart, CartItem  
 from inventory_management.settings import LOW_QUANTITY
 from django.contrib import messages
@@ -86,10 +86,30 @@ class DeleteItem(LoginRequiredMixin, DeleteView):
 	success_url = reverse_lazy('dashboard')
 	context_object_name = 'item'
 
-class OrderList(LoginRequiredMixin, View):
-	def get(self, request):
-		orders = Order.objects.all()
-		return render(request, 'inventory/order_list.html', {'orders': orders})
+class OrderListView(LoginRequiredMixin, ListView):
+	model = Order
+	template_name = 'inventory/order_list.html'
+	context_object_name = 'orders'
+
+class OrderDetailView(LoginRequiredMixin, DetailView):
+	model = Order
+	template_name = 'inventory/order_detail.html'
+	context_object_name = 'order'
+
+class OrderUpdateView(LoginRequiredMixin, UpdateView):
+	model = Order
+	form_class = OrderForm
+	template_name = 'inventory/order_form.html'
+	success_url = reverse_lazy('order_list')
+
+class OrderStatusUpdateView(LoginRequiredMixin, UpdateView):
+	model = Order
+	form_class = OrderStatusForm
+	template_name = 'inventory/update_order_status.html'
+	success_url = reverse_lazy('order_list')
+
+	def form_valid(self, form):
+		return super().form_valid(form)
 
 class CreateOrder(LoginRequiredMixin, View):
 	def get(self, request):

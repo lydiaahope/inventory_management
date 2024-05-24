@@ -32,6 +32,14 @@ class OrderForm(forms.ModelForm):
 		model = Order
 		fields = ['item', 'quantity', 'manufacturer']
 
+class OrderStatusForm(forms.ModelForm):
+	class Meta:
+		model = Order
+		fields = ['status']
+		widgets = {
+			'status' : forms.Select(attrs={'class' : 'form-control'}),
+		}
+
 class SaleForm(forms.ModelForm):
 	class Meta:
 		model = Sale

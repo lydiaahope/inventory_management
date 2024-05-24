@@ -51,6 +51,12 @@ class SaleItem(models.Model):
 	quantity = models.PositiveIntegerField()
 	price = models.DecimalField(max_digits=10, decimal_places=2)
 
+	def save(self, *args, **kwargs):
+		#subtract the quantity from the inventory
+		self.item.quantity -= self.quantity
+		self.item.save()
+		super().save(*args, **kwargs)
+
 	def __str__(self):
 		return f"{self.quantity} of {self.item.name} at {self.price}"
 

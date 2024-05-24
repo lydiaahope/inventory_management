@@ -171,7 +171,7 @@ class ReportView(LoginRequiredMixin, ListView):
         
         # Inventory data
         total_items = InventoryItem.objects.count()
-        low_inventory_items = InventoryItem.objects.filter(quantity__lte=5)  # Adjust threshold as needed
+        low_inventory_items = InventoryItem.objects.filter(quantity__lte=1)  # Adjust threshold as needed
         context['total_items'] = total_items
         context['low_inventory_items'] = low_inventory_items
 

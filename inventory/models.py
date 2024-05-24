@@ -55,10 +55,11 @@ class SaleItem(models.Model):
 		return f"{self.quantity} of {self.item.name} at {self.price}"
 
 class Cart(models.Model):
-	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+	created_at = models.DateTimeField(auto_now_add=True)
 
 class CartItem(models.Model):
-	cart = models.ForeignKey(Cart, related_name='items', on_delete=models.CASCADE)
-	inventory_item = models.ForeignKey(InventoryItem, on_delete=models.CASCADE) #mention of inventory_item, this can be changed to fit user side inventory
-	quantity = models.PositiveIntegerField(default=1)
+	cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+	item = models.ForeignKey('InventoryItem', on_delete=models.CASCADE)
+	quantity = models.IntegerField(default=1)
 

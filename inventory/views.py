@@ -208,24 +208,61 @@ def export_inventory(request): #exports inventory data
 
 class CartView(View):
 	def get(self, request):
-		cart, created = Cart.objects.get_or_create(user=request.user)
+		if request.user.is_authenticated:
+			cart, created = Cart.objects.get_or_create(user=request.user)
+		else:
+			cart = self.get_guest_cart(request)
+
 		cart_items = CartItem.objects.filter(cart=cart)
 		return render(request, 'inventory/cart.html', {'cart_items' : cart_items})
 
-class AddToCartView(CreateView):
-	model = CartItem
-	form_class = CartItemForm
-	template_name = 'inventory/add_to_cart.html'
-	success_url = reverse_lazy('cart')
+	def get_guest_cart(self, request):
+		cart_id = request.session.get('guest_cart_id')
+		if cart_id:
+			cart = Cart.objects.filter(id=cart_id).first()
+		else:
+			cart = Cart.objects.create()
+			request.session['guest_cart_id'] = cart.id
+			return cart
 
-	def form_valid(self, form):
-		cart, created = Cart.objects.get_or_create(user=self.request.user)
-		return super().form_valid(form)
+class AddToCartView(View):
+	def post(self, request, item_id):
+		item = InventoryItem.objects.get(id=item_id)
+		if request.user.is_authenticated:
+			cart, created = Cart.objects.get_or_create(user=request.user)
+		else:
+			cart = self.get_guest_cart(request)
+
+		CartItem.objects.create(cart=cart, item=item, quantity=1)
+		return redirect('cart')
+
+	def get_guest_cart(self, request):
+		cart_id = request.session.get('guest_cart_id')
+		if cart_id:
+			cart = Cart.objects.filter(id=cart_id).first()
+		else:
+			cart = Cart.objects.create()
+			request.session['guest_cart_id'] = cart.id
+		return cart
 
 class CartItemDeleteView(View):
-	def get(self, request, pk):
-		cart_item = CartItem.objects.get(pk=pk)
+	def post(self, request, item_id):
+		if request.user.is_authenticated:
+			cart = Cart.objects.get(user=request.user)
+		else:
+			cart = self.get_guest_cart(request)
+
+		cart_item = CartItem.objects.get(cart=cart, item_id=item_id)
 		cart_item.delete()
 		return redirect('cart')
+
+	def get_guest_cart(self, request):
+		cart_id = request.session.get('guest_cart_id')
+		if cart_id:
+			cart = Cart.objects.filter(id=cart_id).first()
+		else:
+			cart = Cart.objects.create()
+			request.session['guest_cart_id'] = cart.id
+		return cart
 
 

@@ -45,5 +45,5 @@ class SaleItemForm(forms.ModelForm):
 class CartItemForm(forms.ModelForm):
 	class Meta:
 		model = CartItem
-		fields = ['inventory_item', 'quantity'] #inventory_item can be changed
+		fields = ['item', 'quantity'] #item same as where inventory item was referenced, can be changed
 

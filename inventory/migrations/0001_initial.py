@@ -78,7 +78,6 @@ class Migration(migrations.Migration):
                 ("date_created", models.DateTimeField(auto_now_add=True)),
                 ("threshold", models.IntegerField(default=1)),
                 ("reordered", models.BooleanField(default=False)),
-                ("description", models.TextField(blank=True, null=True)),
                 (
                     "author",
                     models.ForeignKey(

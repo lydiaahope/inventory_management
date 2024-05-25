@@ -1,0 +1,41 @@
+{% extends 'inventory/base.html' %}
+
+{% block content%}
+<div class="content-body">
+	<div class="contact-body bg-light">
+        <h2>Contact Us</h2>
+        <form>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                        <tr>
+                            <td class="text-align-left padding-top"><h5>Name:</h5></td>
+                            <td class="text-box-padding-left padding-top"><input type="text" size="30"/></td>
+                        </tr>
+                        <tr>
+                            <td class="font-align-left padding-top"><h5>Email:</h5></td>
+                            <td class="text-box-padding-left padding-top"><input type="text" size="50"/></td>
+                        </tr>
+                        <tr>
+                            <td class="font-align-left padding-top"><h5>Order/Reference Number:</h5></td>
+                            <td class="text-box-padding-left padding-top"><input type="text" size="20" /></td>
+                        </tr>
+                        <tr>
+                            <td class="font-align-left padding-top"><h5>Tell us what you need help with:</h5></td>
+                            <td class="text-box-padding-left padding-top"><textarea rows="8" maxlength="1000" class="textarea-box" ></textarea></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="display: flex; flex-direction: row-reverse;">
+                    <a href="/"><input type="button" name="submit" value="Submit" /></a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

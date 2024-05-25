@@ -228,4 +228,6 @@ class CartItemDeleteView(View):
 		cart_item.delete()
 		return redirect('cart')
 
+def contact_us(request):
+	return render(request, 'inventory/contact_us.html')
 

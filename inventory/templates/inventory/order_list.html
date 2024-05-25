@@ -17,11 +17,15 @@
                 <th scope="col">Quantity</th>
                 <th scope="col">Manufacturer</th>
                 <th scope="col">Order Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
             {% if orders|length == 0 %} <!-- shows empty table if no values -->
             <tr>
+                <td>-</td>
+                <td>-</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
@@ -35,6 +39,13 @@
                 <td>{{ order.quantity }}</td>
                 <td>{{ order.manufacturer }}</td>
                 <td>{{ order.order_date }}</td>
+                <td>{{ order.status }}
+                    <a href="{% url 'order_status_update' order.id %}" class="btn btn-warning btn-sm">Update Status</a>
+                </td>
+                <td>
+                    <a href="{% url 'order_detail' order.pk %}" class="btn btn-info btn-sm">View</a>
+                    <a href="{% url 'order_update' order.pk %}" class="btn btn-warning btn-sm">Update</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

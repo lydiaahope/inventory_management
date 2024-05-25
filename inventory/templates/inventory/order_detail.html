@@ -1,0 +1,15 @@
+{% extends 'inventory/base.html' %}
+{% block content %}
+<div class="container">
+    <a href="{% url 'order_list' %}" class="btn btn-outline-primary my-3">Go Back</a>
+    <h2 class="my-4">Order Details</h2>
+    <ul class="list-group">
+        <li class="list-group-item"><strong>Item:</strong> {{ order.item.name }}</li>
+        <li class="list-group-item"><strong>Quantity:</strong> {{ order.quantity }}</li>
+        <li class="list-group-item"><strong>Manufacturer:</strong> {{ order.manufacturer }}</li>
+        <li class="list-group-item"><strong>Order Date:</strong> {{ order.order_date }}</li>
+        <li class="list-group-item"><strong>Status:</strong> {{ order.order_status }}</li>
+    </ul>
+    <a href="{% url 'order_update' order.pk %}" class="btn btn-warning my-3">Update Status</a>
+</div>
+{% endblock %}

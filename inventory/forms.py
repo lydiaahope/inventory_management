@@ -32,6 +32,14 @@ class OrderForm(forms.ModelForm):
 		model = Order
 		fields = ['item', 'quantity', 'manufacturer']
 
+class OrderStatusForm(forms.ModelForm):
+	class Meta:
+		model = Order
+		fields = ['status']
+		widgets = {
+			'status' : forms.Select(attrs={'class' : 'form-control'}),
+		}
+
 class SaleForm(forms.ModelForm):
 	class Meta:
 		model = Sale
@@ -45,5 +53,5 @@ class SaleItemForm(forms.ModelForm):
 class CartItemForm(forms.ModelForm):
 	class Meta:
 		model = CartItem
-		fields = ['inventory_item', 'quantity'] #inventory_item can be changed
+		fields = ['item', 'quantity'] #item same as where inventory item was referenced, can be changed
 

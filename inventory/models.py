@@ -28,13 +28,21 @@ class Author(models.Model):
 		return self.name
 		
 class Order(models.Model):
-    item = models.ForeignKey(InventoryItem, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
-    order_date = models.DateTimeField(auto_now_add=True)
-    manufacturer = models.CharField(max_length=100)
+	STATUS_CHOICES = [
+		('Pending', 'Pending'),
+		('Shipped', 'Shipped'),
+		('Delivered', 'Delivered'),
+		('Canceled', 'Canceled')
+	]
 
-    def __str__(self):
-        return f"Order for {self.item.name} on {self.order_date}"
+	item = models.ForeignKey(InventoryItem, on_delete=models.CASCADE)
+	quantity = models.IntegerField()
+	order_date = models.DateTimeField(auto_now_add=True)
+	manufacturer = models.CharField(max_length=100)
+	status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+
+	def __str__(self):
+		return f"Order for {self.item.name} on {self.order_date}"
 
 class Sale(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -51,14 +59,21 @@ class SaleItem(models.Model):
 	quantity = models.PositiveIntegerField()
 	price = models.DecimalField(max_digits=10, decimal_places=2)
 
+	def save(self, *args, **kwargs):
+		#subtract the quantity from the inventory
+		self.item.quantity -= self.quantity
+		self.item.save()
+		super().save(*args, **kwargs)
+
 	def __str__(self):
 		return f"{self.quantity} of {self.item.name} at {self.price}"
 
 class Cart(models.Model):
-	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+	created_at = models.DateTimeField(auto_now_add=True)
 
 class CartItem(models.Model):
-	cart = models.ForeignKey(Cart, related_name='items', on_delete=models.CASCADE)
-	inventory_item = models.ForeignKey(InventoryItem, on_delete=models.CASCADE) #mention of inventory_item, this can be changed to fit user side inventory
-	quantity = models.PositiveIntegerField(default=1)
+	cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+	item = models.ForeignKey('InventoryItem', on_delete=models.CASCADE)
+	quantity = models.IntegerField(default=1)
 

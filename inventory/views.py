@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, View, CreateView, UpdateView, DeleteView, ListView
+from django.views.generic import TemplateView, View, CreateView, UpdateView, DeleteView, ListView, DeleteView, DetailView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import UserRegisterForm, InventoryItemForm, OrderForm, SaleForm, SaleItemForm, CartItemForm
+from .forms import UserRegisterForm, InventoryItemForm, OrderForm, SaleForm, SaleItemForm, CartItemForm, OrderStatusForm
 from .models import InventoryItem, Author, Order, Sale, SaleItem, Cart, CartItem  
 from inventory_management.settings import LOW_QUANTITY
 from django.contrib import messages
@@ -86,10 +86,30 @@ class DeleteItem(LoginRequiredMixin, DeleteView):
 	success_url = reverse_lazy('dashboard')
 	context_object_name = 'item'
 
-class OrderList(LoginRequiredMixin, View):
-	def get(self, request):
-		orders = Order.objects.all()
-		return render(request, 'inventory/order_list.html', {'orders': orders})
+class OrderListView(LoginRequiredMixin, ListView):
+	model = Order
+	template_name = 'inventory/order_list.html'
+	context_object_name = 'orders'
+
+class OrderDetailView(LoginRequiredMixin, DetailView):
+	model = Order
+	template_name = 'inventory/order_detail.html'
+	context_object_name = 'order'
+
+class OrderUpdateView(LoginRequiredMixin, UpdateView):
+	model = Order
+	form_class = OrderForm
+	template_name = 'inventory/order_form.html'
+	success_url = reverse_lazy('order_list')
+
+class OrderStatusUpdateView(LoginRequiredMixin, UpdateView):
+	model = Order
+	form_class = OrderStatusForm
+	template_name = 'inventory/update_order_status.html'
+	success_url = reverse_lazy('order_list')
+
+	def form_valid(self, form):
+		return super().form_valid(form)
 
 class CreateOrder(LoginRequiredMixin, View):
 	def get(self, request):
@@ -171,7 +191,7 @@ class ReportView(LoginRequiredMixin, ListView):
         
         # Inventory data
         total_items = InventoryItem.objects.count()
-        low_inventory_items = InventoryItem.objects.filter(quantity__lte=5)  # Adjust threshold as needed
+        low_inventory_items = InventoryItem.objects.filter(quantity__lte=1)  # Adjust threshold as needed
         context['total_items'] = total_items
         context['low_inventory_items'] = low_inventory_items
 
@@ -208,26 +228,64 @@ def export_inventory(request): #exports inventory data
 
 class CartView(View):
 	def get(self, request):
-		cart, created = Cart.objects.get_or_create(user=request.user)
+		if request.user.is_authenticated:
+			cart, created = Cart.objects.get_or_create(user=request.user)
+		else:
+			cart = self.get_guest_cart(request)
+
 		cart_items = CartItem.objects.filter(cart=cart)
 		return render(request, 'inventory/cart.html', {'cart_items' : cart_items})
 
-class AddToCartView(CreateView):
-	model = CartItem
-	form_class = CartItemForm
-	template_name = 'inventory/add_to_cart.html'
-	success_url = reverse_lazy('cart')
+	def get_guest_cart(self, request):
+		cart_id = request.session.get('guest_cart_id')
+		if cart_id:
+			cart = Cart.objects.filter(id=cart_id).first()
+		else:
+			cart = Cart.objects.create()
+			request.session['guest_cart_id'] = cart.id
+			return cart
 
-	def form_valid(self, form):
-		cart, created = Cart.objects.get_or_create(user=self.request.user)
-		return super().form_valid(form)
+class AddToCartView(View):
+	def post(self, request, item_id):
+		item = InventoryItem.objects.get(id=item_id)
+		if request.user.is_authenticated:
+			cart, created = Cart.objects.get_or_create(user=request.user)
+		else:
+			cart = self.get_guest_cart(request)
+
+		CartItem.objects.create(cart=cart, item=item, quantity=1)
+		return redirect('cart')
+
+	def get_guest_cart(self, request):
+		cart_id = request.session.get('guest_cart_id')
+		if cart_id:
+			cart = Cart.objects.filter(id=cart_id).first()
+		else:
+			cart = Cart.objects.create()
+			request.session['guest_cart_id'] = cart.id
+		return cart
 
 class CartItemDeleteView(View):
-	def get(self, request, pk):
-		cart_item = CartItem.objects.get(pk=pk)
+	def post(self, request, item_id):
+		if request.user.is_authenticated:
+			cart = Cart.objects.get(user=request.user)
+		else:
+			cart = self.get_guest_cart(request)
+
+		cart_item = CartItem.objects.get(cart=cart, item_id=item_id)
 		cart_item.delete()
 		return redirect('cart')
 
 def contact_us(request):
 	return render(request, 'inventory/contact_us.html')
+
+def get_guest_cart(self, request):
+		cart_id = request.session.get('guest_cart_id')
+		if cart_id:
+			cart = Cart.objects.filter(id=cart_id).first()
+		else:
+			cart = Cart.objects.create()
+			request.session['guest_cart_id'] = cart.id
+		return cart
+
 

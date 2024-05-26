@@ -31,6 +31,7 @@ urlpatterns = [
     path('cart/', CartView.as_view(), name='cart'),
     path('cart/add/<int:item_id>/', AddToCartView.as_view(), name='add_to_cart'),
     path('cart/delete/<int:item_id>/', CartItemDeleteView.as_view(), name='cart_item_delete'),
-    path('create_order/', views.CreateOrder.as_view(), name='create_order')
+    path('create_order/', views.CreateOrder.as_view(), name='create_order'),
+    path('contact_us', views.contact_us, name='Contact_us')
 ]
 # path('') points rootpath to Index.as_view() and loads index page
